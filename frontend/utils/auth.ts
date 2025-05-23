@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 export const registerUser = async (email: string, password: string, name?: string) => {
     const query = `
     mutation Register($input: RegisterInput!) {
@@ -90,7 +92,7 @@ export const logoutUser = async () => {
     return data.data.logout;
 };
 
-export const fetchMe = async () => {
+export const fetchMe = async (accessToken: string) => {
     const query = `
     query {
       me {
@@ -100,11 +102,11 @@ export const fetchMe = async () => {
       }
     }
   `;
-
+console.log(accessToken)
     const res = await fetch('http://localhost:3001/graphql', {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', cookie: `accessToken=${accessToken}` },
         body: JSON.stringify({ query }),
     });
 
@@ -114,4 +116,3 @@ export const fetchMe = async () => {
 
     return data.data.me;
 };
-
