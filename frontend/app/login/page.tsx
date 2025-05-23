@@ -32,11 +32,12 @@ export default function LoginPage() {
         try {
             setIsLoading(true);
 
-            const res = await loginUser(formData.email, formData.password);
-            console.log(res);
+            await loginUser(formData.email, formData.password);
+
             toast({
                 title: 'Logged in!',
-                description: "Welcome to EventWorld! Let's get started with your events.",
+                className: 'bg-green-700 text-white',
+                description: 'Welcome to EventWorld!',
             });
 
             setIsLoading(false);

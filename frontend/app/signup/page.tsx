@@ -11,8 +11,12 @@ import { Label } from '@/components/ui/label';
 import { PartyPopper } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { registerUser } from '@/utils/auth';
+import { useSetAtom } from 'jotai';
+import { authAtom } from '@/atoms/authAtom';
 
 export default function SignupPage() {
+    const setIsAuthenticated = useSetAtom(authAtom);
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -33,14 +37,14 @@ export default function SignupPage() {
         try {
             setIsLoading(true);
 
-            const res = await registerUser(formData.email, formData.password, formData.name);
-            console.log(res);
+            await registerUser(formData.email, formData.password, formData.name);
             toast({
                 title: 'Account created!',
                 description: "Welcome to EventWorld! Let's get started with your first event.",
             });
 
             setIsLoading(false);
+            setIsAuthenticated(true);
             router.push('/onboarding');
         } catch (error: any) {
             toast({
